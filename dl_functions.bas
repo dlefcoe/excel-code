@@ -84,16 +84,29 @@ Function dl_spread_between_two_bonds(first_isin As String, second_isin As String
     Dim first_bond_spreads As Variant
     Dim second_bond_spreads As Variant
     Dim spread_array As Variant
+    Dim i As Integer
+    
     
     
     first_bond_spreads = dl_Get_Hist(first_isin, isin_list, history_block)
     second_bond_spreads = dl_Get_Hist(second_isin, isin_list, history_block)
     Debug.Print "got to point 2...."
     
-    ReDim spread_array(1 To 10)
+    ReDim spread_array(1 To UBound(first_bond_spreads))
     
+    Debug.Print "length of spread array: " + Str(UBound(first_bond_spreads))
     
-    dl_spread_between_two_bonds = "hello world"
+    For i = 1 To UBound(first_bond_spreads)
+        If (first_bond_spreads(i) = "-") Or (second_bond_spreads(i) = "-") Then
+            spread_array(i) = "-"
+        Else
+            spread_array(i) = first_bond_spreads(i) - second_bond_spreads(i)
+        End If
+        
+        
+    Next i
+    
+    dl_spread_between_two_bonds = spread_array
     
 
 End Function
